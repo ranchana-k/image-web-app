@@ -1,0 +1,21 @@
+# cloudbuild.yaml
+steps:
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["build", "-t", "gcr.io/$PROJECT_ID/image-gallery:$SHORT_SHA", "."]
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["push", "gcr.io/$PROJECT_ID/image-gallery:$SHORT_SHA"]
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    entrypoint: gcloud
+    args:
+      - "run"
+      - "deploy"
+      - "image-gallery-website" # Replace with your service name if different
+      - "--image"
+      - "gcr.io/$PROJECT_ID/image-gallery:$SHORT_SHA"
+      - "--platform"
+      - "managed"
+      - "--region"
+      - "asia-southeast1" # Replace with your desired region
+      - "--allow-unauthenticated"
+substitutions:
+    _BUCKET_NAME: "image-web-app" # Replace with your bucket name
