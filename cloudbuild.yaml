@@ -1,9 +1,9 @@
 # cloudbuild.yaml
 steps:
   - name: "gcr.io/cloud-builders/docker"
-    args: ["build", "-t", "asia-southeast1-docker.pkg.dev/$PROJECT_ID/image-gallery:$SHORT_SHA", "."]
+    args: ["build", "-t", "asia-southeast1-docker.pkg.dev/$PROJECT_ID/image-gallery/image-gallery:$SHORT_SHA", "."]
   - name: "gcr.io/cloud-builders/docker"
-    args: ["push", "asia-southeast1-docker.pkg.dev/$PROJECT_ID/image-gallery:$SHORT_SHA"]
+    args: ["push", "asia-southeast1-docker.pkg.dev/$PROJECT_ID/image-gallery/image-gallery:$SHORT_SHA"]
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
     entrypoint: gcloud
     args:
@@ -11,7 +11,7 @@ steps:
       - "deploy"
       - "image-gallery-website" # Replace with your service name if different
       - "--image"
-      - "asia-southeast1-docker.pkg.dev/$PROJECT_ID/image-gallery:$SHORT_SHA"
+      - "asia-southeast1-docker.pkg.dev/$PROJECT_ID/image-gallery/image-gallery:$SHORT_SHA"
       - "--platform"
       - "managed"
       - "--region"
